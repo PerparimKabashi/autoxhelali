@@ -6,8 +6,8 @@ export interface WrapColor {
   finish: string;
   finishAl: string;
   category?: 'xhelali' | 'premium' | 'metallic' | 'matte' | 'chrome' | 'custom';
-  code?: string; // Kodi i katalogut
-  brand?: string; // Brendi (3M, Hexis, Oracal)
+  code?: string;
+  brand?: string;
 }
 
 export interface UploadedImage {
@@ -20,7 +20,7 @@ export interface UploadedImage {
 }
 
 export const LUXURY_COLORS: WrapColor[] = [
-  // ========== XHELALI COLLECTION - Ngjyrat e Xhelali-t ==========
+  // ========== XHELALI COLLECTION ==========
   { 
     id: '3m-satin-bitter-yellow', 
     name: 'Satin Bitter Yellow', 
