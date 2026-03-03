@@ -34,20 +34,13 @@ export async function POST(request: NextRequest) {
       imageUrl = `data:image/jpeg;base64,${image}`;
     }
 
-    const prompt = `Professional vinyl car wrap: Change this car's body paint color to ${color} with ${finish} finish.
-
-STRICT RULES:
-- ONLY change the car body panels color
-- Keep wheels/rims EXACTLY the same
-- Keep windows EXACTLY the same  
-- Keep headlights/taillights EXACTLY the same
-- Keep background EXACTLY the same
-- Photorealistic result`;
+    const prompt = `Change this car's body color to ${color} with ${finish} finish. Keep wheels, windows, lights, and background exactly the same. Photorealistic.`;
 
     console.log('📝 Color:', color, '| Finish:', finish);
-    console.log('🌐 Calling fal.ai nano-banana-2...');
+    console.log('🌐 Calling fal.ai...');
 
-    const response = await fetch('https://queue.fal.run/fal-ai/nano-banana-2/edit', {
+    // Përdor image_urls (array) jo image_url
+    const response = await fetch('https://queue.fal.run/fal-ai/nano-banana/edit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +48,7 @@ STRICT RULES:
       },
       body: JSON.stringify({
         prompt: prompt,
-        image_urls: [imageUrl],
+        image_urls: [imageUrl],  // Array!
       }),
     });
 
@@ -64,13 +57,10 @@ STRICT RULES:
     console.log('📋 Response:', JSON.stringify(data).substring(0, 400));
 
     if (!response.ok) {
-      return NextResponse.json({ 
-        success: false, 
-        error: data.detail || data.message || `Error ${response.status}` 
-      });
+      return NextResponse.json({ success: false, error: `Error ${response.status}` });
     }
 
-    // Direct result
+    // Rezultat direkt
     if (data.images?.[0]?.url) {
       console.log('✅ Direct result!');
       return NextResponse.json({ success: true, result: data.images[0].url });
@@ -99,8 +89,9 @@ STRICT RULES:
             });
 
             const resultData = await resultRes.json();
-            console.log('📦 Result keys:', Object.keys(resultData));
+            console.log('📦 Result:', JSON.stringify(resultData).substring(0, 400));
 
+            // Kërko URL në përgjigje
             if (resultData.images?.[0]?.url) {
               console.log('✅ Success!');
               return NextResponse.json({ success: true, result: resultData.images[0].url });
@@ -112,17 +103,14 @@ STRICT RULES:
               return NextResponse.json({ success: true, result: resultData.output.url });
             }
             
+            // Kërko çdo URL
             const str = JSON.stringify(resultData);
             const match = str.match(/"url"\s*:\s*"(https:\/\/[^"]+)"/);
             if (match) {
               return NextResponse.json({ success: true, result: match[1] });
             }
 
-            console.log('⚠️ COMPLETED but no image URL found');
-            return NextResponse.json({ 
-              success: false, 
-              error: 'Gjenerimi përfundoi por pa rezultat.' 
-            });
+            console.log('⚠️ No URL found in result');
           }
 
           if (statusData.status === 'FAILED') {
