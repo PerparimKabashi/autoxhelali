@@ -1,0 +1,88 @@
+export interface WrapColor {
+  id: string;
+  name: string;
+  nameAl: string;
+  hex: string;
+  finish: string;
+  finishAl: string;
+  category?: 'xhelali' | 'premium' | 'metallic' | 'matte' | 'chrome' | 'custom';
+  code?: string; // Kodi i katalogut
+  brand?: string; // Brendi (3M, Hexis, Oracal)
+}
+
+export interface UploadedImage {
+  id: string;
+  file: File;
+  preview: string;
+  status: 'pending' | 'processing' | 'completed' | 'error';
+  result?: string;
+  error?: string;
+}
+
+export const LUXURY_COLORS: WrapColor[] = [
+  // ========== XHELALI COLLECTION - Ngjyrat e Xhelali-t ==========
+  { 
+    id: '3m-satin-bitter-yellow', 
+    name: 'Satin Bitter Yellow', 
+    nameAl: 'E Verdhë Satin', 
+    hex: '#D4A800', 
+    finish: 'Satin', 
+    finishAl: 'Satin',
+    category: 'xhelali',
+    code: '2080-S335',
+    brand: '3M'
+  },
+  { 
+    id: 'hexis-indian-pink', 
+    name: 'Indian Pink Gloss', 
+    nameAl: 'Rozë Indiane', 
+    hex: '#C41E6E', 
+    finish: 'Gloss Metallic', 
+    finishAl: 'Metalik me shkëlqim',
+    category: 'xhelali',
+    code: 'HX20RINB',
+    brand: 'Hexis'
+  },
+  { 
+    id: 'oracal-amethyst', 
+    name: 'Amethyst Shift Effect', 
+    nameAl: 'Ametist Shift', 
+    hex: '#7B8E9E', 
+    finish: 'Shift Effect', 
+    finishAl: 'Efekt Shift',
+    category: 'xhelali',
+    code: '970-316G',
+    brand: 'Oracal'
+  },
+
+  // ========== PREMIUM COLLECTION ==========
+  { id: 'obsidian-black', name: 'Obsidian Black', nameAl: 'E Zezë Obsidian', hex: '#0D0D0D', finish: 'Glossy', finishAl: 'Me shkëlqim', category: 'premium' },
+  { id: 'arctic-white', name: 'Arctic White', nameAl: 'E Bardhë Arktike', hex: '#F8F8F8', finish: 'Pearl', finishAl: 'Perla', category: 'premium' },
+  { id: 'champagne-gold', name: 'Champagne Gold', nameAl: 'Ar Shampanjë', hex: '#D4A853', finish: 'Metallic', finishAl: 'Metalik', category: 'premium' },
+  
+  // ========== METALLIC COLLECTION ==========
+  { id: 'midnight-blue', name: 'Midnight Blue', nameAl: 'Blu Mesnate', hex: '#1a1a4e', finish: 'Metallic', finishAl: 'Metalik', category: 'metallic' },
+  { id: 'emerald-green', name: 'Emerald Green', nameAl: 'Gjelbër Smeraldi', hex: '#046307', finish: 'Metallic', finishAl: 'Metalik', category: 'metallic' },
+  { id: 'burgundy-red', name: 'Burgundy Red', nameAl: 'E Kuqe Burgundy', hex: '#722F37', finish: 'Metallic', finishAl: 'Metalik', category: 'metallic' },
+  { id: 'bronze-copper', name: 'Bronze Copper', nameAl: 'Bronz Bakri', hex: '#B87333', finish: 'Metallic', finishAl: 'Metalik', category: 'metallic' },
+  
+  // ========== MATTE COLLECTION ==========
+  { id: 'stealth-grey', name: 'Stealth Grey', nameAl: 'Gri Stealth', hex: '#4A4A4A', finish: 'Matte', finishAl: 'Mat', category: 'matte' },
+  { id: 'military-green', name: 'Military Green', nameAl: 'Gjelbër Ushtarak', hex: '#4B5320', finish: 'Matte', finishAl: 'Mat', category: 'matte' },
+  { id: 'charcoal', name: 'Charcoal', nameAl: 'Qymyr', hex: '#2C2C2C', finish: 'Matte', finishAl: 'Mat', category: 'matte' },
+  
+  // ========== CHROME COLLECTION ==========
+  { id: 'chrome-silver', name: 'Chrome Silver', nameAl: 'Krom Argjendi', hex: '#C0C0C0', finish: 'Chrome', finishAl: 'Krom', category: 'chrome' },
+  { id: 'chrome-gold', name: 'Chrome Gold', nameAl: 'Krom Ari', hex: '#FFD700', finish: 'Chrome', finishAl: 'Krom', category: 'chrome' },
+  { id: 'chrome-rose', name: 'Rose Gold Chrome', nameAl: 'Krom Rozë Ari', hex: '#E8B4B8', finish: 'Chrome', finishAl: 'Krom', category: 'chrome' },
+];
+
+export const FINISH_OPTIONS = [
+  { id: 'glossy', name: 'Glossy', nameAl: 'Me shkëlqim', icon: '✨' },
+  { id: 'matte', name: 'Matte', nameAl: 'Mat', icon: '◼️' },
+  { id: 'satin', name: 'Satin', nameAl: 'Satin', icon: '🌟' },
+  { id: 'metallic', name: 'Metallic', nameAl: 'Metalik', icon: '💎' },
+  { id: 'chrome', name: 'Chrome', nameAl: 'Krom', icon: '🪩' },
+  { id: 'pearl', name: 'Pearl', nameAl: 'Perla', icon: '🦪' },
+  { id: 'shift', name: 'Shift Effect', nameAl: 'Efekt Shift', icon: '🔮' },
+];

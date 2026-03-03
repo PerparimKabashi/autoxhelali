@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Check, Palette, Sparkles } from 'lucide-react';
+import { Check, Palette, Sparkles, Star } from 'lucide-react';
 import { WrapColor, LUXURY_COLORS, FINISH_OPTIONS } from '@/types';
 
 interface ColorSelectorProps {
@@ -10,6 +10,7 @@ interface ColorSelectorProps {
 }
 
 const CATEGORIES = [
+  { id: 'xhelali', name: 'Xhelali', nameAl: '⭐ Xhelali' },
   { id: 'all', name: 'Të Gjitha', nameAl: 'Të Gjitha' },
   { id: 'premium', name: 'Premium', nameAl: 'Premium' },
   { id: 'metallic', name: 'Metallic', nameAl: 'Metalik' },
@@ -21,7 +22,7 @@ export default function ColorSelector({
   selectedColor,
   onColorSelect,
 }: ColorSelectorProps) {
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState('xhelali');
   const [isCustomMode, setIsCustomMode] = useState(false);
   const [customHex, setCustomHex] = useState('#D4A853');
   const [customName, setCustomName] = useState('');
@@ -91,7 +92,9 @@ export default function ColorSelector({
                 className={`
                   px-4 py-2 font-accent text-xs tracking-[0.15em] whitespace-nowrap transition-all duration-300
                   ${activeCategory === cat.id
-                    ? 'bg-luxury-gold text-luxury-black'
+                    ? cat.id === 'xhelali' 
+                      ? 'bg-gradient-to-r from-luxury-gold to-luxury-gold-light text-luxury-black'
+                      : 'bg-luxury-gold text-luxury-black'
                     : 'bg-luxury-charcoal text-luxury-cream/60 hover:text-luxury-gold border border-luxury-gold/20'
                   }
                 `}
@@ -101,16 +104,27 @@ export default function ColorSelector({
             ))}
           </div>
 
+          {/* Xhelali Collection Notice */}
+          {activeCategory === 'xhelali' && (
+            <div className="flex items-center gap-3 p-3 border border-luxury-gold/30 bg-luxury-gold/5 animate-fade-in">
+              <Star className="w-5 h-5 text-luxury-gold flex-shrink-0" />
+              <p className="font-body text-xs text-luxury-cream/70 tracking-wide">
+                Ngjyrat e disponueshme në stokun e <span className="text-luxury-gold font-semibold">Auto Folie Xhelali</span>
+              </p>
+            </div>
+          )}
+
           {/* Color Grid */}
-          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7 gap-3">
+          <div className={`grid gap-3 ${activeCategory === 'xhelali' ? 'grid-cols-3' : 'grid-cols-4 sm:grid-cols-6 md:grid-cols-7'}`}>
             {filteredColors.map((color) => (
               <button
                 key={color.id}
                 onClick={() => onColorSelect(color)}
                 className={`
-                  relative aspect-square transition-all duration-300 group
+                  relative transition-all duration-300 group
+                  ${activeCategory === 'xhelali' ? 'aspect-[4/3]' : 'aspect-square'}
                   ${selectedColor?.id === color.id
-                    ? 'ring-2 ring-luxury-gold ring-offset-4 ring-offset-luxury-black scale-110 z-10'
+                    ? 'ring-2 ring-luxury-gold ring-offset-4 ring-offset-luxury-black scale-105 z-10'
                     : 'hover:scale-105'
                   }
                 `}
@@ -127,9 +141,23 @@ export default function ColorSelector({
                   </div>
                 )}
 
-                {/* Category indicator */}
-                {color.category === 'premium' && (
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-luxury-gold rotate-45" />
+                {/* Xhelali badge */}
+                {color.category === 'xhelali' && activeCategory !== 'xhelali' && (
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-luxury-gold rotate-45 flex items-center justify-center">
+                    <Star className="w-3 h-3 text-luxury-black -rotate-45" />
+                  </div>
+                )}
+
+                {/* Brand & Code for Xhelali */}
+                {activeCategory === 'xhelali' && color.brand && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-luxury-black/80 backdrop-blur-sm p-2">
+                    <p className="font-accent text-[10px] text-luxury-gold tracking-wider truncate">
+                      {color.brand}
+                    </p>
+                    <p className="font-mono text-[9px] text-luxury-cream/60 truncate">
+                      {color.code}
+                    </p>
+                  </div>
                 )}
               </button>
             ))}
@@ -193,7 +221,7 @@ export default function ColorSelector({
             <label className="font-accent text-xs tracking-wider text-luxury-gold/60 block mb-3">
               PËRFUNDIMI
             </label>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-7 gap-2">
               {FINISH_OPTIONS.map((finish) => (
                 <button
                   key={finish.id}
@@ -232,19 +260,36 @@ export default function ColorSelector({
             style={{ backgroundColor: selectedColor.hex }}
           />
           <div className="flex-1 min-w-0">
-            <p className="font-display text-xl sm:text-2xl text-luxury-cream truncate">
-              {selectedColor.nameAl}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="font-display text-xl sm:text-2xl text-luxury-cream truncate">
+                {selectedColor.nameAl}
+              </p>
+              {selectedColor.category === 'xhelali' && (
+                <Star className="w-4 h-4 text-luxury-gold flex-shrink-0" />
+              )}
+            </div>
             <p className="font-body text-sm text-luxury-cream/50 tracking-wide">
               {selectedColor.name}
             </p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs font-accent tracking-wider text-luxury-gold/80">
+            <div className="flex items-center gap-2 mt-1 flex-wrap">
+              {selectedColor.brand && (
+                <>
+                  <span className="text-xs font-accent tracking-wider text-luxury-gold">
+                    {selectedColor.brand}
+                  </span>
+                  <span className="text-luxury-gold/30">•</span>
+                </>
+              )}
+              {selectedColor.code && (
+                <>
+                  <span className="text-xs font-mono text-luxury-cream/60">
+                    {selectedColor.code}
+                  </span>
+                  <span className="text-luxury-gold/30">•</span>
+                </>
+              )}
+              <span className="text-xs font-accent tracking-wider text-luxury-cream/40">
                 {selectedColor.finishAl.toUpperCase()}
-              </span>
-              <span className="text-luxury-gold/30">•</span>
-              <span className="text-xs font-mono text-luxury-cream/40">
-                {selectedColor.hex}
               </span>
             </div>
           </div>
